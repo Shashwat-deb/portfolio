@@ -1,20 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { playStartupChime, playClickSound } from '../utils/audio';
 
-// 3-Lobe Custom Monogram/Propeller Logo
+// Halftone Sphere Logo
 const MonogramLogo = () => (
-  <svg viewBox="0 0 100 100" className="w-16 h-16 mx-auto text-[#18181b]" fill="currentColor">
-    {/* Central hub */}
-    <circle cx="50" cy="50" r="10" />
-    {/* Connector lines / branches */}
-    <path d="M50,50 Q44,28 50,18 Q56,28 50,50 Z" />
-    <path d="M50,50 Q66,59 76,66 Q61,70 50,50 Z" />
-    <path d="M50,50 Q34,59 24,66 Q39,70 50,50 Z" />
-    {/* Outer rounded lobes */}
-    <circle cx="50" cy="18" r="9" />
-    <circle cx="76" cy="66" r="9" />
-    <circle cx="24" cy="66" r="9" />
-  </svg>
+  <img 
+    src="/new_logo.png" 
+    className="w-16 h-16 mx-auto object-contain" 
+    alt="System Logo" 
+  />
 );
 
 interface BootScreenProps {
@@ -79,7 +72,7 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onLoginCompleted }) => {
       
       {/* Main card box */}
       <div 
-        className="relative z-10 w-[380px] p-8 flex flex-col items-center justify-between text-center select-none"
+        className={`relative z-10 w-[380px] p-8 flex flex-col items-center justify-between text-center select-none ${bootState === 'booting' ? 'boot-loading-flicker' : ''}`}
         style={{ 
           minHeight: '380px',
           boxShadow: '0 15px 35px rgba(0,0,0,0.4)',
@@ -180,7 +173,10 @@ export const BootScreen: React.FC<BootScreenProps> = ({ onLoginCompleted }) => {
 
               {/* Guest Login */}
               <button 
-                onClick={handleUserLogin}
+                onClick={() => {
+                  playClickSound();
+                  window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank", "noopener,noreferrer");
+                }}
                 className="w-full flex items-center gap-3 p-1.5 hover:bg-[#28509c] hover:text-white rounded group cursor-pointer text-zinc-800 transition-colors"
               >
                 <div className="w-7 h-7 bg-zinc-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold group-hover:bg-white group-hover:text-zinc-800 flex-shrink-0">

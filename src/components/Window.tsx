@@ -16,6 +16,7 @@ interface WindowProps {
   height?: string;
   desktopRef: React.RefObject<HTMLDivElement | null>;
   children: React.ReactNode;
+  resizable?: boolean;
 }
 
 export const Window: React.FC<WindowProps> = ({
@@ -31,7 +32,8 @@ export const Window: React.FC<WindowProps> = ({
   width = '500px',
   height = '400px',
   desktopRef,
-  children
+  children,
+  resizable = false
 }) => {
   const windowRef = useRef<HTMLDivElement>(null);
   const dragControls = useDragControls();
@@ -81,7 +83,8 @@ export const Window: React.FC<WindowProps> = ({
         zIndex, 
         position: 'absolute',
         width, 
-        height 
+        height,
+        ...(resizable ? { resize: 'both', minWidth: '280px', minHeight: '180px' } : {})
       }}
       className="bg-[#fbfaf7] border-2 border-zinc-800 retro-border-shadow flex flex-col overflow-hidden"
     >

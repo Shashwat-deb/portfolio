@@ -40,7 +40,7 @@ const GithubIcon: React.FC<{ size?: number; className?: string }> = ({ size = 14
    ABOUT WINDOW CONTENT
    ========================================================================== */
 export const AboutContent: React.FC = () => {
-  const skills = ['C++', 'Python', 'Java', 'JS/TS', 'React', 'Node', 'PostgreSQL', 'Streamlit'];
+  const skills = ['C', 'C++', 'Java', 'Python', 'JS/TS', 'SQL', 'React.js', 'Node.js', 'PostgreSQL', 'TailwindCSS', 'Quant Finance', 'Git'];
 
   return (
     <div className="font-retro-mono text-xs text-zinc-800 space-y-6 max-w-full select-text py-2">

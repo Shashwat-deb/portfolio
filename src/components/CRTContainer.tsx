@@ -24,9 +24,9 @@ export const CRTContainer: React.FC<CRTContainerProps> = ({ children }) => {
       </svg>
 
       {/* Outer physical CRT Monitor casing */}
-      <div className="relative crt-monitor overflow-hidden flex items-center justify-center">
+      <div className="crt-monitor">
         {/* Inner screen content */}
-        <div className="relative w-full h-full crt-screen bg-[#1a1a24] overflow-hidden flex flex-col crt-flicker-anim noise-bg">
+        <div className="crt-screen bg-[#1a1a24] overflow-hidden flex flex-col noise-bg">
           {/* Main system views (Boot -> Login -> Desktop) */}
           <div className="relative w-full h-full z-10">
             {children}
