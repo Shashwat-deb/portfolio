@@ -6,17 +6,9 @@ interface MenuBarProps {
   onLogout: () => void;
 }
 
-// System menu logo icon SVG
+// System menu logo icon
 const SmallMonogram = () => (
-  <svg viewBox="0 0 100 100" className="w-4 h-4 fill-current" fill="currentColor">
-    <circle cx="50" cy="50" r="10" />
-    <path d="M50,50 Q44,28 50,18 Q56,28 50,50 Z" />
-    <path d="M50,50 Q66,59 76,66 Q61,70 50,50 Z" />
-    <path d="M50,50 Q34,59 24,66 Q39,70 50,50 Z" />
-    <circle cx="50" cy="18" r="9" />
-    <circle cx="76" cy="66" r="9" />
-    <circle cx="24" cy="66" r="9" />
-  </svg>
+  <img src="/logo.png" className="w-5 h-5 object-contain" alt="Logo" />
 );
 
 export const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout, onLogout }) => {
@@ -88,13 +80,6 @@ export const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout, onLogout }) => {
                 className="w-full text-left px-4 py-1 hover:bg-[#28509c] hover:text-white cursor-pointer font-retro-serif text-xs"
               >
                 About This Portfolio
-              </button>
-              <div className="h-[2px] bg-zinc-800 my-1" />
-              <button 
-                onClick={() => { playClickSound(); alert("Shashwat OS X v10.0\nBuilt with React & Framer Motion\nDesigned by Antigravity"); }}
-                className="w-full text-left px-4 py-1 hover:bg-[#28509c] hover:text-white cursor-pointer font-retro-mono text-[10px]"
-              >
-                System Information
               </button>
               <div className="h-[2px] bg-zinc-800 my-1" />
               <button 
