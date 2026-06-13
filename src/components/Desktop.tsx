@@ -433,9 +433,9 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
       isOpen: false,
       isMinimized: false,
       zIndex: 1,
-      width: '560px',
-      height: '450px',
-      defaultPos: { x: 220, y: 130 }
+      width: '700px',
+      height: '480px',
+      defaultPos: { x: 220, y: 80 }
     },
     trash: {
       id: 'trash',
