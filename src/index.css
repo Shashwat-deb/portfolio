@@ -69,10 +69,10 @@ html, body {
 
 .crt-screen {
   position: absolute;
-  top: 9.3%;
-  left: 6.2%;
-  width: 87.7%;
-  height: 81.7%;
+  top: 9.5%;
+  left: 6.5%;
+  width: 87%;
+  height: 81%;
   border-radius: 2.2% / 3.5%;
   overflow: hidden;
   box-shadow: 
@@ -320,5 +320,16 @@ html, body {
   padding-right: 2rem;
   animation: marquee-scroll 10s linear infinite;
   will-change: transform;
+}
+
+/* Trash shake keyframes & class */
+@keyframes trash-shake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  20%, 60% { transform: translateX(-4px) rotate(-3deg); }
+  40%, 80% { transform: translateX(4px) rotate(3deg); }
+}
+
+.trash-shake-active {
+  animation: trash-shake 0.4s ease-in-out;
 }
 

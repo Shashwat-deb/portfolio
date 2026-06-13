@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { playClickSound } from '../utils/audio';
+import { playClickSound, playStartupChime } from '../utils/audio';
 
 interface MenuBarProps {
   onOpenAbout: () => void;
@@ -68,7 +68,15 @@ export const MenuBar: React.FC<MenuBarProps> = ({ onOpenAbout, onLogout }) => {
         {/* Monogram System Dropdown */}
         <div className="relative">
           <button 
-            onClick={(e) => { e.stopPropagation(); handleMenuClick('system'); }}
+            onClick={(e) => { 
+              if (e.detail === 3) {
+                e.stopPropagation();
+                playStartupChime();
+              } else {
+                e.stopPropagation(); 
+                handleMenuClick('system'); 
+              }
+            }}
             className={`flex items-center px-2 py-0.5 rounded cursor-pointer transition-colors ${activeMenu === 'system' ? 'bg-[#28509c] text-white' : 'hover:bg-zinc-200'}`}
           >
             <SmallMonogram />

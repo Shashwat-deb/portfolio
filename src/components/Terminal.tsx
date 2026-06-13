@@ -198,7 +198,7 @@ export const Terminal: React.FC<TerminalProps> = ({ onClose }) => {
 
   // Autocomplete logic for Tab key press
   const handleAutocomplete = () => {
-    const commandsList = ['help', 'pwd', 'ls', 'cd', 'cat', 'echo', 'clear', 'exit'];
+    const commandsList = ['help', 'pwd', 'ls', 'cd', 'cat', 'echo', 'clear', 'exit', 'sudo'];
     const input = inputValue;
     const trimmed = input.trimStart();
 
@@ -382,7 +382,8 @@ export const Terminal: React.FC<TerminalProps> = ({ onClose }) => {
           '  cat <file>       Display text file contents',
           '  echo <text>      Print text to terminal output',
           '  clear            Clear terminal history screen',
-          '  exit             Close the terminal window'
+          '  exit             Close the terminal window',
+          '  sudo <cmd>       Execute command as superuser'
         ].join('\n');
         break;
 
@@ -454,6 +455,21 @@ export const Terminal: React.FC<TerminalProps> = ({ onClose }) => {
       case 'echo':
         outputText = argStr;
         break;
+
+      case 'sudo': {
+        const subCmd = args.join(' ').toLowerCase();
+        if (subCmd === 'hire shashwat') {
+          outputText = 'Access Granted 🎉';
+          window.dispatchEvent(new Event('trigger-confetti'));
+        } else if (!subCmd) {
+          outputText = 'usage: sudo <command>';
+          isError = true;
+        } else {
+          outputText = 'sudo: permission denied';
+          isError = true;
+        }
+        break;
+      }
 
       case 'exit':
         onClose();

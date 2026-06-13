@@ -4,8 +4,209 @@ import { Window } from './Window';
 import { Dock } from './Dock';
 import { AboutContent, ProjectsContent, ContactContent, FolderContent } from './Content';
 import { Terminal } from './Terminal';
-import { playOpenSound } from '../utils/audio';
+import { playOpenSound, playClickSound } from '../utils/audio';
 import { MusicPlayer } from './MusicPlayer';
+import { StarryNightBackground } from './StarryNightBackground';
+import { HackerConsole } from './HackerConsole';
+
+const SecretBioContent: React.FC = () => {
+  return (
+    <div className="font-retro-mono text-xs text-zinc-800 space-y-4 select-text py-2">
+      <div className="border-b-2 border-zinc-800 pb-3 flex items-center justify-between">
+        <div>
+          <h3 className="font-retro-serif text-base font-bold text-red-700">☣ CLASSIFIED BIO</h3>
+          <p className="text-[10px] text-zinc-500 mt-0.5">Project: Shashwat-deb Intelligence Dossier</p>
+        </div>
+        <span className="text-[10px] bg-red-600 text-white font-bold px-1.5 py-0.5 rounded select-none animate-pulse">
+          TOP SECRET
+        </span>
+      </div>
+      
+      <p className="leading-relaxed bg-zinc-900 text-green-400 p-3 rounded font-mono text-[10px]">
+        WARNING: AUTHORIZED ACCESS ONLY.
+        <br />
+        ------------------------------------
+        <br />
+        Subject: SHASHWAT SHIKHAR DWIVEDI
+        <br />
+        Clearance Level: LEVEL 5 (DEVELOPER)
+        <br />
+        Specialization: Systems Engineering, Financial Algorithms
+        <br />
+        Alignment: Chaotic Good Software Engineer
+      </p>
+
+      <div className="space-y-2">
+        <h4 className="font-bold text-zinc-900 border-b border-zinc-400 pb-1">🕵️ INTERCEPTED INTEL</h4>
+        <ul className="list-disc pl-4 space-y-1 text-[11px]">
+          <li><strong>Coding Superpower:</strong> Writing highly efficient code under pressure.</li>
+          <li><strong>Favorite Weapon:</strong> C++ pointers & clean React Hooks.</li>
+          <li><strong>Midnight Coffee Consumption:</strong> Over 1000 mg/day (estimated).</li>
+          <li><strong>Current Objective:</strong> Building robust full-stack software and quant models.</li>
+        </ul>
+      </div>
+
+      <div className="text-[9px] text-zinc-400 italic text-center pt-2">
+        "The best way to predict the future is to program it."
+      </div>
+    </div>
+  );
+};
+
+const ResumeContent: React.FC = () => {
+  return (
+    <div className="bg-white text-zinc-950 font-sans p-6 rounded shadow-sm border border-zinc-200 overflow-y-auto h-full select-text selection:bg-blue-200">
+      {/* Header */}
+      <div className="text-center space-y-2 pb-4 border-b border-zinc-300">
+        <h1 className="font-retro-serif text-xl font-bold tracking-tight text-zinc-900">
+          SHASHWAT SHIKHAR DWIVEDI
+        </h1>
+        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-[10px] text-zinc-600 font-mono">
+          <a href="mailto:shashwatshikhard@gmail.com" className="hover:underline hover:text-blue-600">shashwatshikhard@gmail.com</a>
+          <span>•</span>
+          <span>+91-9792677013</span>
+          <span>•</span>
+          <a href="https://linkedin.com/in/shashwat-shikhar-d" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-blue-600">linkedin.com/in/shashwat-shikhar-d</a>
+          <span>•</span>
+          <a href="https://github.com/Shashwat-deb" target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-blue-600">github.com/Shashwat-deb</a>
+        </div>
+      </div>
+
+      {/* Content body */}
+      <div className="mt-5 space-y-5 text-[11px] leading-relaxed">
+        
+        {/* Education */}
+        <section className="space-y-2">
+          <h2 className="font-retro-serif text-xs font-bold text-zinc-900 border-b border-zinc-300 pb-0.5 uppercase tracking-wide">
+            Education
+          </h2>
+          <div className="space-y-2">
+            <div className="flex justify-between items-baseline font-semibold text-zinc-900">
+              <span>Manipal University Jaipur</span>
+              <span className="font-normal text-[10px] text-zinc-500">Jaipur, Rajasthan</span>
+            </div>
+            <div className="flex justify-between items-baseline text-zinc-700 text-[10px] -mt-1">
+              <span>B.Tech. in Computer Science and Engineering | CGPA: <strong className="text-zinc-900">8.56 / 10.0</strong></span>
+              <span>2024 – 2028</span>
+            </div>
+            <ul className="list-disc pl-4 space-y-1 text-zinc-600 text-[10px]">
+              <li><strong>Core CS:</strong> Data Structures & Algorithms, Design & Analysis of Algorithms, OOP (Java), RDBMS, Operating Systems, Automata & Compiler Design, Computer Organization & Architecture, Cryptography.</li>
+              <li><strong>Mathematics & Quant:</strong> Probability & Statistics, Calculus & Matrices, Computational Mathematics.</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Technical Skills */}
+        <section className="space-y-2">
+          <h2 className="font-retro-serif text-xs font-bold text-zinc-900 border-b border-zinc-300 pb-0.5 uppercase tracking-wide">
+            Technical Skills
+          </h2>
+          <div className="grid grid-cols-[110px_1fr] gap-x-2 gap-y-1.5 text-zinc-700">
+            <span className="font-bold text-zinc-800">Languages:</span>
+            <span>C, C++, Python (NumPy, Pandas, Scikit-Learn), Java, JavaScript, TypeScript, SQL</span>
+
+            <span className="font-bold text-zinc-800">Quant & Fin.:</span>
+            <span>Financial Modelling, Stochastic Modelling, Derivatives Pricing (Greeks, Monte Carlo), Time Series (ARIMA, GARCH), VaR, CVaR, Sharpe Ratio, Portfolio Construction & Optimization, ESG Metrics, Equity Valuation</span>
+
+            <span className="font-bold text-zinc-800">Web Dev:</span>
+            <span>React.js, Node.js, Express.js, PostgreSQL, TailwindCSS</span>
+
+            <span className="font-bold text-zinc-800">Data & AI:</span>
+            <span>Data Analytics, Data Engineering, Blockchain Technology, Generative AI, Prompt Engineering, Agentic Development</span>
+
+            <span className="font-bold text-zinc-800">Tools:</span>
+            <span>Streamlit, Git, GitHub, Postman, Linux</span>
+          </div>
+        </section>
+
+        {/* Professional Experience */}
+        <section className="space-y-2">
+          <h2 className="font-retro-serif text-xs font-bold text-zinc-900 border-b border-zinc-300 pb-0.5 uppercase tracking-wide">
+            Professional Experience
+          </h2>
+          <div className="space-y-2">
+            <div className="flex justify-between items-baseline font-semibold text-zinc-900">
+              <span>Software Development Centre, MUJ</span>
+              <span className="font-normal text-[10px] text-zinc-500">Jaipur, Rajasthan</span>
+            </div>
+            <div className="flex justify-between items-baseline text-zinc-700 text-[10px] -mt-1">
+              <span>Software Developer Intern</span>
+              <span>January 2026 – Present</span>
+            </div>
+            <ul className="list-disc pl-4 space-y-1.5 text-zinc-600 text-[10px]">
+              <li>Developing and deploying full-stack solutions for the university ecosystem using modern JavaScript frameworks and backend technologies.</li>
+              <li>Architecting RESTful API endpoints, secure database schemas, and authentication systems for scalable community platforms.</li>
+              <li>Collaborating in an agile environment to migrate and optimize university services, ensuring high availability and seamless data synchronization.</li>
+            </ul>
+          </div>
+        </section>
+
+        {/* Technical Projects */}
+        <section className="space-y-2">
+          <h2 className="font-retro-serif text-xs font-bold text-zinc-900 border-b border-zinc-300 pb-0.5 uppercase tracking-wide">
+            Technical Projects
+          </h2>
+          <div className="space-y-3">
+            {/* Quant Risk */}
+            <div>
+              <div className="flex justify-between items-baseline font-semibold text-zinc-900">
+                <span>Quant Infrastructure for Risk-Adjusted Portfolio Optimisation</span>
+                <span className="font-normal text-[10px] text-zinc-500">Feb 2026</span>
+              </div>
+              <p className="text-[9px] font-bold text-sky-700 uppercase tracking-wider -mt-0.5">ML & Quantitative Finance</p>
+              <ul className="list-disc pl-4 mt-1 space-y-1 text-zinc-600 text-[10px]">
+                <li>Architected an ML-driven quantitative framework to simulate asset price movements and optimize portfolio allocations using risk-adjusted metrics.</li>
+                <li>Integrated ARIMA and GARCH forecasting models to evaluate time-series market data and improve real-time investment strategies.</li>
+                <li>Implemented portfolio construction algorithms leveraging Sharpe ratio maximisation, VaR, and CVaR constraints to systematically minimise downside risk.</li>
+              </ul>
+            </div>
+
+            {/* MF Portfolio Pro */}
+            <div>
+              <div className="flex justify-between items-baseline font-semibold text-zinc-900">
+                <span>MF Portfolio Pro</span>
+                <span className="font-normal text-[10px] text-zinc-500">January 2026</span>
+              </div>
+              <p className="text-[9px] font-bold text-sky-700 uppercase tracking-wider -mt-0.5">Mutual Fund Analytics Platform</p>
+              <ul className="list-disc pl-4 mt-1 space-y-1 text-zinc-600 text-[10px]">
+                <li>Built a comprehensive interactive web application with Streamlit for end-to-end mutual fund portfolio analysis and health tracking.</li>
+                <li>Engineered quantitative modules for VaR and CVaR calculations providing actionable risk insights, volatility-adjusted scoring, and alpha generation signals.</li>
+                <li>Streamlined data ingestion pipelines to evaluate historical fund performance, asset diversification, and ESG-aligned investment metrics.</li>
+              </ul>
+            </div>
+
+            {/* Travel Buddy */}
+            <div>
+              <div className="flex justify-between items-baseline font-semibold text-zinc-900">
+                <span>Travel Buddy</span>
+                <span className="font-normal text-[10px] text-zinc-500">Nov 2025</span>
+              </div>
+              <p className="text-[9px] font-bold text-sky-700 uppercase tracking-wider -mt-0.5">Community Vehicle-Pooling Platform</p>
+              <ul className="list-disc pl-4 mt-1 space-y-1 text-zinc-600 text-[10px]">
+                <li>Designed and deployed a full-stack carpooling platform serving the Manipal University Jaipur (MUJ) student ecosystem.</li>
+                <li>Developed a real-time ride-matching algorithm and integrated location-based services to optimize intra-community transit, reducing commuting costs and carbon footprint.</li>
+                <li>Implemented role-based access control and secure peer-to-peer coordination features.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Certifications */}
+        <section className="space-y-2">
+          <h2 className="font-retro-serif text-xs font-bold text-zinc-900 border-b border-zinc-300 pb-0.5 uppercase tracking-wide">
+            Certifications & Achievements
+          </h2>
+          <ul className="list-disc pl-4 space-y-1.5 text-zinc-600 text-[10px]">
+            <li><strong>NPTEL:</strong> Certified in Design and Analysis of Algorithms (DAA) and Data Structures and Algorithms (DSA) – National Programme on Technology Enhanced Learning.</li>
+            <li><strong>Enterprise Data Science in Practice – IBM SkillsBuild:</strong> Certified in data analytics, data engineering, and enterprise data science workflows (May 2026).</li>
+            <li><strong>Supercharge Your Data Analytics with Generative AI:</strong> IBM SkillsBuild.</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+  );
+};
 
 
 interface WindowState {
@@ -21,20 +222,7 @@ interface WindowState {
 
 // SVGs for desktop/dock icons
 const TrashIcon = ({ className = "w-9 h-9" }: { className?: string }) => (
-  <svg viewBox="0 0 100 100" className={`${className} text-zinc-800 fill-current`} stroke="black" strokeWidth="2.5">
-    <rect x="25" y="25" width="50" height="60" rx="4" fill="none" />
-    {/* Grid pattern for wire mesh */}
-    <line x1="33" y1="25" x2="33" y2="85" stroke="black" strokeWidth="1.5" />
-    <line x1="42" y1="25" x2="42" y2="85" stroke="black" strokeWidth="1.5" />
-    <line x1="50" y1="25" x2="50" y2="85" stroke="black" strokeWidth="1.5" />
-    <line x1="58" y1="25" x2="58" y2="85" stroke="black" strokeWidth="1.5" />
-    <line x1="67" y1="25" x2="67" y2="85" stroke="black" strokeWidth="1.5" />
-    <line x1="25" y1="40" x2="75" y2="40" stroke="black" strokeWidth="1" />
-    <line x1="25" y1="55" x2="75" y2="55" stroke="black" strokeWidth="1" />
-    <line x1="25" y1="70" x2="75" y2="70" stroke="black" strokeWidth="1" />
-    {/* Top rim */}
-    <ellipse cx="50" cy="25" rx="28" ry="8" fill="#e4e4e7" stroke="black" strokeWidth="2" />
-  </svg>
+  <img src="/trash_new.png" className={`${className} object-contain`} alt="Trash" />
 );
 
 interface DesktopProps {
@@ -54,6 +242,35 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
   const [maxZ, setMaxZ] = useState(10);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const [isTrashShaking, setIsTrashShaking] = useState(false);
+  const [showTrashMsg, setShowTrashMsg] = useState(false);
+
+  const handleTrashClick = () => {
+    playClickSound();
+    setIsTrashShaking(true);
+    setShowTrashMsg(true);
+    setTimeout(() => setIsTrashShaking(false), 400);
+    setTimeout(() => setShowTrashMsg(false), 2000);
+  };
+
+  useEffect(() => {
+    const handleKonami = () => {
+      openWindow('secret');
+    };
+    const handleHacker = () => {
+      openWindow('hacker');
+    };
+    window.addEventListener('trigger-konami', handleKonami);
+    window.addEventListener('trigger-hacker', handleHacker);
+    return () => {
+      window.removeEventListener('trigger-konami', handleKonami);
+      window.removeEventListener('trigger-hacker', handleHacker);
+    };
+  }, []);
+
+  const today = new Date();
+  const isMidnight = today.getHours() === 0 || window.location.search.includes('midnight=true');
   const [currentTrackIndex, setCurrentTrackIndex] = useState<number>(() => {
     const saved = localStorage.getItem('shashwat_portfolio_last_played_track');
     if (saved) {
@@ -249,6 +466,36 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
       width: '360px',
       height: '460px',
       defaultPos: { x: 300, y: 150 }
+    },
+    secret: {
+      id: 'secret',
+      title: 'classified bio',
+      isOpen: false,
+      isMinimized: false,
+      zIndex: 1,
+      width: '500px',
+      height: '420px',
+      defaultPos: { x: 200, y: 150 }
+    },
+    hacker: {
+      id: 'hacker',
+      title: 'secret_console.sh',
+      isOpen: false,
+      isMinimized: false,
+      zIndex: 1,
+      width: '580px',
+      height: '380px',
+      defaultPos: { x: 220, y: 120 }
+    },
+    resume: {
+      id: 'resume',
+      title: 'shashwat_resume.pdf',
+      isOpen: false,
+      isMinimized: false,
+      zIndex: 1,
+      width: '640px',
+      height: '520px',
+      defaultPos: { x: 180, y: 80 }
     }
   });
 
@@ -356,7 +603,42 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
       onClick: () => handleDockClick('music'), 
       isOpen: windows.music.isOpen 
     },
-    { id: 'trash', label: 'Trash', icon: <TrashIcon className="w-11 h-11" />, onClick: () => handleDockClick('trash'), isOpen: windows.trash.isOpen }
+    { 
+      id: 'minecraft', 
+      label: 'Minecraft', 
+      icon: <img src="/minecraft.png" className="w-11 h-11 object-contain" alt="Minecraft" />, 
+      onClick: () => {
+        playClickSound();
+        window.open("https://classic.minecraft.net/", "_blank", "noopener,noreferrer");
+      }, 
+      isOpen: false 
+    },
+    { 
+      id: 'roadrash', 
+      label: 'RoadRash', 
+      icon: <img src="/roadrash.jpg" className="w-11 h-11 object-cover rounded-md" alt="RoadRash" />, 
+      onClick: () => {
+        playClickSound();
+        window.open("https://dos.zone/road-rash/", "_blank", "noopener,noreferrer");
+      }, 
+      isOpen: false 
+    },
+    { 
+      id: 'trash', 
+      label: 'Trash', 
+      icon: (
+        <div className={`relative ${isTrashShaking ? 'trash-shake-active' : ''}`}>
+          <TrashIcon className="w-11 h-11" />
+          {showTrashMsg && (
+            <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#fbfaf7] text-zinc-800 text-[10px] font-bold font-retro-mono border-2 border-zinc-800 px-1.5 py-0.5 rounded shadow-md z-30 whitespace-nowrap">
+              nothing to delete... yet
+            </div>
+          )}
+        </div>
+      ), 
+      onClick: handleTrashClick, 
+      isOpen: windows.trash.isOpen 
+    }
   ];
 
 
@@ -365,8 +647,10 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
       {/* Background Wallpaper matching user reference */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/wallpaper.png')" }}
-      />
+        style={{ backgroundImage: isMidnight ? 'none' : "url('/wallpaper.png')" }}
+      >
+        {isMidnight && <StarryNightBackground />}
+      </div>
 
       {/* Top Menu Bar */}
       <MenuBar 
@@ -421,26 +705,31 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
             </span>
           </button>
 
-          {/* Music Player Icon */}
+          {/* Resume Document Icon */}
           <button 
-            onClick={() => openWindow('music')}
+            onClick={() => openWindow('resume')}
             className="flex flex-col items-center gap-1.5 cursor-pointer group w-full text-center"
           >
             <div className="w-12 h-12 flex items-center justify-center rounded group-active:opacity-80">
-              <img src="/assets/icons/music-icon.jpg" className="w-12 h-12 object-contain rounded-md" alt="Music Player" />
+              <img src="/resume_icon.png" className="w-12 h-12 object-contain" alt="Resume" />
             </div>
             <span className="text-[10px] font-bold tracking-wide text-zinc-900 bg-white/70 px-1 rounded shadow-sm border border-zinc-300">
-              music player
+              resume
             </span>
           </button>
 
           {/* Trash Icon */}
           <button 
-            onClick={() => openWindow('trash')}
-            className="flex flex-col items-center gap-1.5 cursor-pointer group w-full text-center"
+            onClick={() => handleTrashClick()}
+            className={`flex flex-col items-center gap-1.5 cursor-pointer group w-full text-center ${isTrashShaking ? 'trash-shake-active' : ''}`}
           >
-            <div className="w-12 h-12 flex items-center justify-center rounded group-active:opacity-80">
+            <div className="w-12 h-12 flex items-center justify-center rounded group-active:opacity-80 relative">
               <TrashIcon />
+              {showTrashMsg && (
+                <div className="absolute bottom-full mb-1 bg-[#fbfaf7] text-zinc-800 text-[10px] font-bold font-retro-mono border-2 border-zinc-800 px-1.5 py-0.5 rounded shadow-md z-30 whitespace-nowrap">
+                  nothing to delete... yet
+                </div>
+              )}
             </div>
             <span className="text-[10px] font-bold tracking-wide text-zinc-900 bg-white/70 px-1 rounded shadow-sm border border-zinc-300">
               trash
@@ -598,6 +887,60 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
             seek={seek}
             setVolume={setVolume}
           />
+        </Window>
+
+        {/* Secret Dossier Window */}
+        <Window
+          id="secret"
+          title="classified bio"
+          isOpen={windows.secret.isOpen}
+          isMinimized={windows.secret.isMinimized}
+          onClose={() => closeWindow('secret')}
+          onMinimize={() => minimizeWindow('secret')}
+          onFocus={() => focusWindow('secret')}
+          zIndex={windows.secret.zIndex}
+          width={windows.secret.width}
+          height={windows.secret.height}
+          defaultPosition={windows.secret.defaultPos}
+          desktopRef={desktopRef}
+        >
+          <SecretBioContent />
+        </Window>
+
+        {/* Hacker Console Window */}
+        <Window
+          id="hacker"
+          title="secret_console.sh"
+          isOpen={windows.hacker.isOpen}
+          isMinimized={windows.hacker.isMinimized}
+          onClose={() => closeWindow('hacker')}
+          onMinimize={() => minimizeWindow('hacker')}
+          onFocus={() => focusWindow('hacker')}
+          zIndex={windows.hacker.zIndex}
+          width={windows.hacker.width}
+          height={windows.hacker.height}
+          defaultPosition={windows.hacker.defaultPos}
+          desktopRef={desktopRef}
+        >
+          <HackerConsole />
+        </Window>
+
+        {/* Resume Window */}
+        <Window
+          id="resume"
+          title="shashwat_resume.pdf"
+          isOpen={windows.resume.isOpen}
+          isMinimized={windows.resume.isMinimized}
+          onClose={() => closeWindow('resume')}
+          onMinimize={() => minimizeWindow('resume')}
+          onFocus={() => focusWindow('resume')}
+          zIndex={windows.resume.zIndex}
+          width={windows.resume.width}
+          height={windows.resume.height}
+          defaultPosition={windows.resume.defaultPos}
+          desktopRef={desktopRef}
+        >
+          <ResumeContent />
         </Window>
       </div>
 

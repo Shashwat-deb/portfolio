@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { playErrorSound } from '../utils/audio';
 
 interface CRTContainerProps {
   children: React.ReactNode;
 }
 
 export const CRTContainer: React.FC<CRTContainerProps> = ({ children }) => {
+  const [, setMonitorClicks] = useState(0);
+  const [isScreenOff, setIsScreenOff] = useState(false);
+  const [powerCycleKey, setPowerCycleKey] = useState(0);
+
+  const handleMonitorClick = () => {
+    setMonitorClicks(prev => {
+      const next = prev + 1;
+      if (next >= 10) {
+        playErrorSound();
+        setIsScreenOff(true);
+        setTimeout(() => {
+          setIsScreenOff(false);
+          setPowerCycleKey(k => k + 1);
+        }, 300);
+        return 0;
+      }
+      return next;
+    });
+  };
+
   return (
     <div className="min-h-screen w-screen bg-[#111113] flex items-center justify-center overflow-hidden select-none">
       {/* Inline SVG filter for noise texture */}
@@ -24,9 +45,12 @@ export const CRTContainer: React.FC<CRTContainerProps> = ({ children }) => {
       </svg>
 
       {/* Outer physical CRT Monitor casing */}
-      <div className="crt-monitor">
+      <div className="crt-monitor" onClick={handleMonitorClick}>
         {/* Inner screen content */}
-        <div className="crt-screen bg-[#1a1a24] overflow-hidden flex flex-col noise-bg">
+        <div 
+          key={powerCycleKey}
+          className={`crt-screen bg-[#1a1a24] overflow-hidden flex flex-col noise-bg transition-opacity duration-100 ${isScreenOff ? 'opacity-0' : ''}`}
+        >
           {/* Main system views (Boot -> Login -> Desktop) */}
           <div className="relative w-full h-full z-10">
             {children}
