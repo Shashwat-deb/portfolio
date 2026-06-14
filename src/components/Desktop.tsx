@@ -4,7 +4,7 @@ import { Window } from './Window';
 import { Dock } from './Dock';
 import { AboutContent, ProjectsContent, ContactContent, FolderContent } from './Content';
 import { Terminal } from './Terminal';
-import { playOpenSound, playClickSound } from '../utils/audio';
+import { playOpenSound, playClickSound, playSomberChime } from '../utils/audio';
 import { MusicPlayer } from './MusicPlayer';
 import { StarryNightBackground } from './StarryNightBackground';
 import { HackerConsole } from './HackerConsole';
@@ -244,14 +244,42 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [isTrashShaking, setIsTrashShaking] = useState(false);
-  const [showTrashMsg, setShowTrashMsg] = useState(false);
+  const [trashTooltip, setTrashTooltip] = useState('');
+  const [showTrashTooltip, setShowTrashTooltip] = useState(false);
+  const [trashContextMenu, setTrashContextMenu] = useState<{ x: number; y: number } | null>(null);
+  const [trashContextMsg, setTrashContextMsg] = useState('');
+  const [fRespects, setFRespects] = useState(false);
+  const [showFToast, setShowFToast] = useState(false);
+
+  const TRASH_TOOLTIPS = [
+    'nothing to delete... yet',
+    'my old code lives here',
+    "don't look in here",
+    '404: regrets not found',
+  ];
+
+  const handleTrashMouseEnter = () => {
+    const msg = TRASH_TOOLTIPS[Math.floor(Math.random() * TRASH_TOOLTIPS.length)];
+    setTrashTooltip(msg);
+    setShowTrashTooltip(true);
+  };
+
+  const handleTrashMouseLeave = () => {
+    setShowTrashTooltip(false);
+  };
 
   const handleTrashClick = () => {
     playClickSound();
     setIsTrashShaking(true);
-    setShowTrashMsg(true);
     setTimeout(() => setIsTrashShaking(false), 400);
-    setTimeout(() => setShowTrashMsg(false), 2000);
+    openWindow('trash');
+  };
+
+  const handleTrashContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    playClickSound();
+    setTrashContextMenu({ x: e.clientX, y: e.clientY });
+    setTrashContextMsg('');
   };
 
   useEffect(() => {
@@ -439,13 +467,13 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
     },
     trash: {
       id: 'trash',
-      title: 'trash can',
+      title: 'deleted projects',
       isOpen: false,
       isMinimized: false,
       zIndex: 1,
-      width: '400px',
-      height: '250px',
-      defaultPos: { x: 400, y: 200 }
+      width: '460px',
+      height: '340px',
+      defaultPos: { x: 320, y: 160 }
     },
     terminal: {
       id: 'terminal',
@@ -547,6 +575,23 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
     }));
   };
 
+  // F key — pay respects when deleted-projects window is open
+  useEffect(() => {
+    const handleFKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== 'f') return;
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) return;
+      if (!windows.trash.isOpen || windows.trash.isMinimized) return;
+      playSomberChime();
+      setFRespects(true);
+      setShowFToast(true);
+      setTimeout(() => setFRespects(false), 600);
+      setTimeout(() => setShowFToast(false), 3000);
+    };
+    window.addEventListener('keydown', handleFKey);
+    return () => window.removeEventListener('keydown', handleFKey);
+  }, [windows.trash.isOpen, windows.trash.isMinimized]);
+
   // Dock item action triggers
   const handleDockClick = (id: string) => {
     const win = windows[id];
@@ -627,11 +672,16 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
       id: 'trash', 
       label: 'Trash', 
       icon: (
-        <div className={`relative ${isTrashShaking ? 'trash-shake-active' : ''}`}>
+        <div
+          className={`relative ${isTrashShaking ? 'trash-shake-active' : ''}`}
+          onMouseEnter={handleTrashMouseEnter}
+          onMouseLeave={handleTrashMouseLeave}
+          onContextMenu={handleTrashContextMenu}
+        >
           <TrashIcon className="w-11 h-11" />
-          {showTrashMsg && (
+          {showTrashTooltip && (
             <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-[#fbfaf7] text-zinc-800 text-[10px] font-bold font-retro-mono border-2 border-zinc-800 px-1.5 py-0.5 rounded shadow-md z-30 whitespace-nowrap">
-              nothing to delete... yet
+              {trashTooltip}
             </div>
           )}
         </div>
@@ -720,14 +770,17 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
 
           {/* Trash Icon */}
           <button 
-            onClick={() => handleTrashClick()}
+            onClick={handleTrashClick}
+            onMouseEnter={handleTrashMouseEnter}
+            onMouseLeave={handleTrashMouseLeave}
+            onContextMenu={handleTrashContextMenu}
             className={`flex flex-col items-center gap-1.5 cursor-pointer group w-full text-center ${isTrashShaking ? 'trash-shake-active' : ''}`}
           >
             <div className="w-12 h-12 flex items-center justify-center rounded group-active:opacity-80 relative">
               <TrashIcon />
-              {showTrashMsg && (
-                <div className="absolute bottom-full mb-1 bg-[#fbfaf7] text-zinc-800 text-[10px] font-bold font-retro-mono border-2 border-zinc-800 px-1.5 py-0.5 rounded shadow-md z-30 whitespace-nowrap">
-                  nothing to delete... yet
+              {showTrashTooltip && (
+                <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-[#fbfaf7] text-zinc-800 text-[10px] font-bold font-retro-mono border-2 border-zinc-800 px-1.5 py-0.5 rounded shadow-md z-30 whitespace-nowrap">
+                  {trashTooltip}
                 </div>
               )}
             </div>
@@ -814,10 +867,10 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
           <ContactContent />
         </Window>
 
-        {/* Trash Window */}
+        {/* Trash / Deleted Projects Window */}
         <Window
           id="trash"
-          title="trash can"
+          title="deleted projects"
           isOpen={windows.trash.isOpen}
           isMinimized={windows.trash.isMinimized}
           onClose={() => closeWindow('trash')}
@@ -829,10 +882,38 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
           defaultPosition={windows.trash.defaultPos}
           desktopRef={desktopRef}
         >
-          <div className="font-retro-mono text-zinc-600 text-xs text-center flex flex-col items-center justify-center h-full gap-2">
-            <TrashIcon />
-            <p>Your trash is empty.</p>
-            <p className="text-[10px] text-zinc-400">Everything is clean.</p>
+          <div className="font-retro-mono text-zinc-800 text-xs p-2 space-y-3 select-text overflow-y-auto h-full">
+            <div className="border-b-2 border-zinc-800 pb-2">
+              <p className="font-retro-serif font-bold text-sm">🗑️ Deleted Projects</p>
+              <p className="text-[10px] text-zinc-500 mt-0.5">Here lie the abandoned. Press F to pay respects.</p>
+            </div>
+            {/* F Toast */}
+            {showFToast && (
+              <div className="border-2 border-zinc-800 bg-[#fbfaf7] retro-border-shadow px-3 py-2 text-center font-retro-mono text-[11px] text-zinc-800 animate-pulse">
+                🔔 F paid. They will be remembered.
+              </div>
+            )}
+            <div className="space-y-2.5">
+              {[
+                { name: 'Social Media App v1', rip: 'RIP 2023', reason: 'scope creep took it too soon' },
+                { name: 'Blockchain Voting System', rip: 'RIP 2023', reason: 'complexity: over 9000' },
+                { name: 'AI Recipe Generator', rip: 'RIP 2024', reason: 'ran out of API credits' },
+                { name: 'Portfolio v1 (the ugly one)', rip: 'RIP 2024', reason: 'mercy kill' },
+                { name: 'Discord Clone', rip: 'RIP 2022', reason: 'websockets said no' },
+              ].map((p) => (
+                <div key={p.name} className="flex items-start gap-2 bg-zinc-100 border border-zinc-300 rounded p-2">
+                  <span
+                    className="text-xl leading-none select-none"
+                    style={fRespects ? { animation: 'trash-shake 0.4s ease' } : {}}
+                  >🪦</span>
+                  <div>
+                    <p className="font-bold text-zinc-900 text-[11px]">{p.name}</p>
+                    <p className="text-[10px] text-red-700 font-semibold">{p.rip}</p>
+                    <p className="text-[9px] text-zinc-500 italic">&quot;{p.reason}&quot;</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </Window>
 
@@ -954,6 +1035,41 @@ export const Desktop: React.FC<DesktopProps> = ({ onLogout }) => {
 
       {/* Floating Dock */}
       <Dock items={dockItems} />
+
+      {/* Trash right-click context menu */}
+      {trashContextMenu && (
+        <>
+          <div
+            className="fixed inset-0 z-[9990]"
+            onClick={() => setTrashContextMenu(null)}
+            onContextMenu={(e) => { e.preventDefault(); setTrashContextMenu(null); }}
+          />
+          <div
+            className="fixed z-[9999] bg-[#fbfaf7] border-2 border-zinc-800 retro-border-shadow py-1 w-52 font-retro-mono text-xs text-zinc-800"
+            style={{ left: trashContextMenu.x, top: trashContextMenu.y }}
+          >
+            {trashContextMsg ? (
+              <div className="px-3 py-2 text-[10px] text-zinc-600 italic leading-relaxed">{trashContextMsg}</div>
+            ) : (
+              <>
+                <button
+                  className="w-full text-left px-3 py-1.5 hover:bg-[#28509c] hover:text-white cursor-pointer"
+                  onClick={() => { playClickSound(); setTrashContextMsg('your past has been erased.'); }}
+                >
+                  Empty Trash
+                </button>
+                <div className="h-[2px] bg-zinc-800 my-1" />
+                <button
+                  className="w-full text-left px-3 py-1.5 hover:bg-[#28509c] hover:text-white cursor-pointer"
+                  onClick={() => { playClickSound(); setTrashContextMsg('size: 0 bytes\n(emotionally: 4GB)'); }}
+                >
+                  Get Info
+                </button>
+              </>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

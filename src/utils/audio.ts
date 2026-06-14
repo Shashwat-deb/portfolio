@@ -141,3 +141,30 @@ export function playErrorSound() {
     // Suppress error
   }
 }
+
+export function playSomberChime() {
+  try {
+    const ctx = getAudioContext();
+    if (ctx.state === 'suspended') ctx.resume();
+    const now = ctx.currentTime;
+
+    // Soft bell tone — pure sine at A4 (440Hz) with slow exponential decay
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(440, now);
+
+    gain.gain.setValueAtTime(0.0, now);
+    gain.gain.linearRampToValueAtTime(0.06, now + 0.02);   // fast attack
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 2.2); // slow bell decay
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(now);
+    osc.stop(now + 2.3);
+  } catch {
+    // Suppress error
+  }
+}
